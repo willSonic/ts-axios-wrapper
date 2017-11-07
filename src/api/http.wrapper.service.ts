@@ -1,13 +1,14 @@
 import { Observable } from 'rxjs';
 import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/from';
 import ApiCore from './axios-wrapper';
 import { AxiosRequestConfig } from 'axios';
 import { HttpParams } from './interfaces/httpParams.model';
 
-const Config:any = {
+const Config: any = {
   API: 'api',
   HOST: 'http://localhost',
-  PORT: '5555'
+  PORT: '8080'
 };
 
 const apiConfig: AxiosRequestConfig = {
@@ -34,10 +35,10 @@ export class HttpWrapperService {
     }
 
 
-  public delete(params: HttpParams) {
-    let { apiUrl} = this.configRequest(params.uri, true);
+  public delete(params: HttpParams): Observable<any> {
+    let { apiUrl } = this.configRequest(params.uri, true);
 
-    return this._apiCore.delete(apiUrl)
+    return Observable.fromPromise(this._apiCore.delete(apiUrl))
       .map(res => ({
         type: params.successActionType,
         payload: res.data
@@ -46,14 +47,14 @@ export class HttpWrapperService {
         type: params.errorActionType,
         payload: {
           action_type: params.specificErrorType,
-          message: res.json().error
+          message: res.response
         }
       }));
   }
 
-  public get(params: HttpParams) {
+  public get(params: HttpParams): Observable<any> {
     let { apiUrl} = this.configRequest(params.uri, params.auth);
-    return  this._apiCore.get(apiUrl, params.payload)
+    return  Observable.fromPromise(this._apiCore.get(apiUrl, params.payload))
       .map(res => ({
         type: params.successActionType,
         payload: res
@@ -62,32 +63,39 @@ export class HttpWrapperService {
         type: params.errorActionType,
         payload: {
           action_type: params.specificErrorType,
-          message: res.json()
+          message:  res.response
         }
       }));
   }
 
-  public post(params: HttpParams) {
+  public post(params: HttpParams): Observable<any> {
 
     let { apiUrl} = this.configRequest(params.uri, params.auth);
-    return  this._apiCore.post(apiUrl, params.payload)
-      .map(res => ({
-        type: params.successActionType,
-        payload: res
-      }))
-      .catch(res => Observable.of({
-        type: params.errorActionType,
-        payload: {
-          action_type: params.specificErrorType,
-          message: res.json().error
-        }
-      }));
+    return  Observable.fromPromise(this._apiCore.post(apiUrl, params.payload))
+      .map(res => {
+
+          console.log("GOT map == res", res)
+          return({
+              type: params.successActionType,
+              payload: res
+          })
+      })
+      .catch(res => {
+          console.log("GOT ERROR == res", res.response)
+          return Observable.of({
+              type: params.errorActionType,
+              payload: {
+                  action_type: params.specificErrorType,
+                  message: res.response
+              }
+          })
+      });
   }
 
-  public put(params: HttpParams) {
+  public put(params: HttpParams): Observable<any> {
     let { apiUrl } = this.configRequest(params.uri, true);
 
-    return  this._apiCore.put(apiUrl, params.payload)
+    return  Observable.fromPromise(this._apiCore.put(apiUrl, params.payload))
       .map(res => ({
         type: params.successActionType,
         payload: res
@@ -96,19 +104,19 @@ export class HttpWrapperService {
         type: params.errorActionType,
         payload: {
           action_type: params.specificErrorType,
-          message: res.json().error
+          message: res.response
         }
       }));
   }
 
 
-  private configRequest(uri: string, authRequired: boolean = false): {apiUrl: string} {
-    const apiUrl = `${Config.HOST}/${Config.API}/${uri}`;
+  private configRequest(uri: string, authRequired: boolean = false): { apiUrl: string } {
+    const apiUrl = `${Config.HOST}:${Config.PORT}/${Config.API}/${uri}`;
     const newConfig = apiConfig;
 
-    if(authRequired && !newConfig.headers.Authorization){
-         newConfig.headers.Authorization = `${localStorage['Authorized']}`;
-    }else if(!authRequired && newConfig.headers.Authorization){
+    if( authRequired && !newConfig.headers.Authorization) {
+         newConfig.headers.Authorization = `${ localStorage['Authorized'] }`;
+    } else if(!authRequired && newConfig.headers.Authorization ) {
            newConfig.headers.Authorization = '';
     }
 

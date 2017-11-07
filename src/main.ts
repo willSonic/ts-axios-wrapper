@@ -1,24 +1,44 @@
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/map';
 
 
-import  { UserServices } from "./api/user.service";
-import  { HttpWrapperService } from "./api/http.wrapper.service";
+import  { UserServices } from'./api/user.service';
 
-const userService:UserServices = new UserServices(new HttpWrapperService());
+const userService: UserServices = new UserServices( );
 
-let  newUser = (<any>Object).assign( {},{
-    username: "TaoSing",
-    firstname: "Willie",
-    lastname: "Streeter",
-    password: "pass1234",
-    email: "beez@nest.com"
-})
-
-
-const result  = Observable.of(userService.registerUser( newUser,'Errrpr', 'failure', 'Success')).subscribe( (result)=>{
-
-    console.log('RESULT =', result)
-    return result;
+let  newUser = (<any>Object).assign( {}, {
+    username: 'BinDaoBee',
+    firstname: 'Sam',
+    lastname: 'Stomptown',
+    password: 'pass1111',
+    email: 'seeds@nest.com'
 });
+
+
+
+const result  = userService.registerUser( newUser,
+                         'Error',
+                         'failure',
+                         'Success')
+                          .subscribe(result=>{
+                                                        console.log('Result === ', result)
+                                                        return result;
+                                                    });
+
+
+
+let  loginUser = (<any>Object).assign( {}, {
+    username: 'BinDaoBee',
+    password: 'pass1111'
+});
+
+
+const loginResult  = userService.loginUser( loginUser,
+                         'Error',
+                         'failure',
+                         'Success')
+                          .subscribe(result=>{
+                                                        console.log('loginResult === ', result)
+                                                        return result;
+                                                    });

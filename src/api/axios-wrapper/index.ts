@@ -13,69 +13,66 @@ export default class ApiCore {
 		this._AXIOS_FORM = generateFormDataAxiosInstance(this._apiConfig);
 	}
 
-	public  delete(urlPath: string): Observable<AxiosResponse> {
+	public async delete(urlPath: string): Promise<AxiosResponse['data']> {
 		try {
-			const res =  this._AXIOS.delete(urlPath);
+			const res = await this._AXIOS.delete(urlPath);
 
-			return Observable.fromPromise(res);
+			return res.data;
 		} catch (error) {
 			//handleErrors(error);
-            throw error;
+			throw error;
 		}
 	}
 
-	public  get(urlPath: string, params:any): Observable<AxiosResponse> {
+	public async get(urlPath: string, params:any): Promise<AxiosResponse['data']> {
 		try {
-			const res =  this._AXIOS.get(urlPath, { params });
+			const res = await this._AXIOS.get(urlPath, { params });
 
-			return Observable.fromPromise(res);
+			return res.data;
 		} catch (error) {
-			//handleErrors(error);
-            throw error;
+			handleErrors(error);
 		}
 	}
 
-	public  patch(urlPath: string, data:any): Observable<AxiosResponse> {
+	public async patch(urlPath: string, data:any): Promise<AxiosResponse['data']> {
 		try {
-			const res =  this._AXIOS.patch(urlPath, data);
+			const res = await this._AXIOS.patch(urlPath, data);
 
-			return Observable.fromPromise(res);
+			return res.data;
 		} catch (error) {
-			//handleErrors(error);
-            throw error;
+			handleErrors(error);
+			throw error;
 		}
 	}
 
-	public  post(urlPath: string, data:any): Observable<AxiosResponse> {
+	public async post(urlPath: string, data:any): Promise<AxiosResponse['data']> {
 		try {
-			const res =  this._AXIOS.post(urlPath, data);
-
-			return Observable.fromPromise(res );
+			const res = await this._AXIOS.post(urlPath, data);
+			return res.data;
 		} catch (error) {
 			//handleErrors(error);
-            throw error;
+			throw error;
 		}
 	}
 
-	public  postFormData(urlPath: string, data:any): Observable<AxiosResponse> {
+	public async postFormData(urlPath: string, data:any): Promise<AxiosResponse['data']> {
 		try {
-			const res =  this._AXIOS_FORM.post(urlPath, getFormData(data));
+			const res = await this._AXIOS_FORM.post(urlPath, getFormData(data));
 
-			return Observable.fromPromise(res );
+			return res.data;
 		} catch (error) {
 			//handleErrors(error);
-            throw error;
+			throw error;
 		}
 	}
 
-	public  put(urlPath: string, data:any): Observable<AxiosResponse> {
+	public async put(urlPath: string, data:any): Promise<AxiosResponse['data']> {
 		try {
-			const res =  this._AXIOS.put(urlPath, data);
+			const res = await this._AXIOS.put(urlPath, data);
 
-			return Observable.fromPromise( res );
+			return res.data;
 		} catch (error) {
-			//handleErrors(error);
-            throw error;
+			handleErrors(error);
 		}
 	}
 
@@ -108,14 +105,14 @@ function getFormData(object:any): FormData {
 
 function handleErrors(error: AxiosError): void {
 	if (error.response) {
-		console.error(error.response.data);
-		console.error(error.response.status);
-		console.error(error.response.headers);
+		console.log(error.response.data);
+		console.log(error.response.status);
+		console.log(error.response.headers);
 	} else if (error.request) {
-		console.error(error.request);
+		console.log(error.request);
 	} else {
-		console.error('Api Core Error', error.message);
+		console.log('Api Core Error', error.message);
 	}
 
-	console.error(error.config);
+	console.log(error.config);
 }
