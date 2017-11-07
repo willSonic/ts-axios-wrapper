@@ -1,25 +1,25 @@
 {
   "compilerOptions": {
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "noImplicitAny": true,
-    "module": "es2015",
+    "module": "commonjs",
+    "target": "ES5",
     "moduleResolution": "node",
-    "target": "es5",
-    "jsx": "react",
-    "allowJs": true,
-    "lib": ["es5", "es6", "dom", "es7", "esnext"],
-    "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "paths": {
-      "redux": ["typings/redux.d.ts"],
-      "shared/*": ["src/shared/*"],
-      "schema": ["src/base/schema"]
-    }
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true,
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "rootDir": ".",
+    "outDir": "./dist",
+    "typeRoots": [
+      "./node_modules/@types"
+    ]
   },
-  "include": ["./src"],
-  "exclude": ["./src/**/*.test.tsx"]
+  "exclude": [
+    "node_modules",
+    "bundles",
+    "dist"
+  ]
 }
