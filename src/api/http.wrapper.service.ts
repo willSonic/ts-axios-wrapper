@@ -21,7 +21,7 @@ const apiConfig: AxiosRequestConfig = {
 
 
 
-export class HttpWrapperService {
+export default class HttpWrapperService {
     /*
       These are the methods that are used in the additional api-services,
       where otherwise they would require importing angular 2 http module.

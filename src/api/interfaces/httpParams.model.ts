@@ -1,4 +1,4 @@
-export interface HttpParams {
+export default interface HttpParams {
  auth?: boolean;
  errorActionType: string;
  specificErrorType:string;
