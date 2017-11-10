@@ -16,6 +16,11 @@ let  newUser = (<any>Object).assign( {}, {
 });
 
 
+const Config: any = {
+    API: 'api',
+    HOST: 'http://localhost',
+    PORT: '8080'
+};
 
 const result  = userService.registerUser( newUser,
                          'Error',

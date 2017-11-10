@@ -73,15 +73,14 @@ export class HttpWrapperService {
     let { apiUrl} = this.configRequest(params.uri, params.auth);
     return  Observable.fromPromise(this._apiCore.post(apiUrl, params.payload))
       .map(res => {
-
-          console.log("GOT map == res", res)
+            // console.log("GOT map == res", res)
           return({
               type: params.successActionType,
               payload: res
           })
       })
       .catch(res => {
-          console.log("GOT ERROR == res", res.response)
+          //console.log("GOT ERROR == res", res.response)
           return Observable.of({
               type: params.errorActionType,
               payload: {

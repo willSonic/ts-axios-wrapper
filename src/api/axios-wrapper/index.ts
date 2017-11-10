@@ -81,6 +81,13 @@ export default class ApiCore {
 		this._AXIOS = generateAxiosInstance(this._apiConfig);
 		this._AXIOS_FORM = generateFormDataAxiosInstance(this._apiConfig);
 	}
+
+
+	/* public get axios instance for testing purposes */
+
+	public getAxiosInstance(): AxiosInstance{
+		return this._AXIOS;
+	}
 }
 
 function generateAxiosInstance(apiConfig: AxiosRequestConfig): AxiosInstance {
