@@ -3,8 +3,8 @@ import MockAdapter = require( 'axios-mock-adapter' );
 import ApiCore from '../../api/axios-wrapper';
 import { AxiosRequestConfig } from 'axios';
 
-import HttpWrapperService from '../../api/http.wrapper.service';
-import HttpParams from '../../api/interfaces/httpParams.model';
+import { HttpWrapperService } from '../../api/http.wrapper.service';
+import  HttpParams from '../../api/interfaces/httpParams.model';
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 
@@ -83,7 +83,7 @@ const badLoginResult = (<any>Object).assign( {}, {
 
 
 describe('HttpWrapperService test', () => {
-    const httpWrapper = new HttpWrapperService();
+    const httpWrapper:HttpWrapperService = new HttpWrapperService();
 
     test('post New User returns Observable.fromPromise ', (done) => {
         let someObservable:Subscription;

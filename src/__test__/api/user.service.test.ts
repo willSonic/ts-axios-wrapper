@@ -2,11 +2,11 @@
 import MockAdapter = require( 'axios-mock-adapter' );
 import ApiCore from '../../api/axios-wrapper';
 import { AxiosRequestConfig } from 'axios';
-
-import HttpWrapperService from '../../api/http.wrapper.service';
 import HttpParams from '../../api/interfaces/httpParams.model';
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
+//import {HttpWrapperService} from "../../api/http.wrapper.service";
+import {UserServices} from "../../api/user.service";
 
 const Config: any = {
     API: 'api',
@@ -82,17 +82,17 @@ const badLoginResult = (<any>Object).assign( {}, {
 
 
 
-describe('HttpWrapperService test', () => {
-    const httpWrapper = new HttpWrapperService();
+describe('UserServiceTest test', () => {
+    const userServices = new UserServices();
 
     test('post New User returns Observable.fromPromise ', (done) => {
         let someObservable:Subscription;
-        let mock = new MockAdapter(httpWrapper._apiCore.getAxiosInstance())
+        let mock = new MockAdapter(userServices.httpWrapperService._apiCore.getAxiosInstance())
         mock.onPost(`${Config.HOST}:${Config.PORT}/${Config.API}/Users`).reply(200, newUseresult);
-        someObservable  =  httpWrapper.post(httParams)
+        someObservable  =  userServices.registerUser(newUser, "small Time Error","BIG TIME ERROR", "BIG TIME SUCCESS")
 
         someObservable.subscribe(  (result) =>{
-            console.log('--HttpWrapperService--  Observable.fromPromise result = ', result)
+            console.log('--UserServices--  Observable.fromPromise result = ', result)
             done();
         })
 
